@@ -20,7 +20,6 @@ URL:		http://www.cdemu.org/
 %if %{with userspace}
 %pyrequires_eq	python-libs
 BuildRequires:	python-devel
-BuildRequires:	rpm-pythonprov
 %endif
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel-module-build >= 2.6.7}
