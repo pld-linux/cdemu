@@ -15,7 +15,7 @@ Release:	%{_rel}
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://robert.private.outertech.com/virtualcd/%{name}-%{version}.tar.bz2
-# Source0-md5:	1d58ee3989c0772d670732b1b10501c2
+# Source0-md5:	e1a0ba6c76b4eeaf434f44d4a0f61678
 URL:		http://www.cdemu.org/
 %if %{with userspace}
 %pyrequires_eq	python-libs
