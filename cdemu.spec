@@ -49,9 +49,9 @@ ln -sf %{_kernelsrcdir}/include/linux/autoconf-up.h include/linux/autoconf.h
 ln -sf %{_kernelsrcdir}/include/asm-%{_arch} include/asm
 touch include/config/MARKER
 %{__make} -C %{_kernelsrcdir} modules \
-        SUBDIRS=$PWD \
-        O=$PWD \
-        V=1
+	SUBDIRS=$PWD \
+	O=$PWD \
+	V=1
 %endif
 
 %install
