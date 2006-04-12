@@ -6,11 +6,11 @@
 %bcond_with	verbose		# verbose build (V=1)
 %bcond_without	userspace	# don't build userspace tools
 #
+%define		_rel	1
 Summary:	Simulate a CD drive + CD with just simple cue/bin files
 Summary(pl):	Symulacja napêdu CD z p³ytk± przy u¿yciu plików cue/bin
 Name:		cdemu
 Version:	0.7
-%define		_rel	1
 Release:	%{_rel}
 License:	GPL v2
 Group:		Applications/System
@@ -22,11 +22,11 @@ URL:		http://www.cdemu.org/
 BuildRequires:	python-devel
 %endif
 %if %{with kernel}
-%{?with_dist_kernel:BuildRequires:	kernel-module-build >= 2.6.7}
+%{?with_dist_kernel:BuildRequires:	kernel-module-build >= 3:2.6.7}
 BuildRequires:	rpmbuild(macros) >= 1.153
 %endif
-Requires:	dev >= 2.9.0-16
 Requires:	cdemu(kernel)
+Requires:	dev >= 2.9.0-16
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
