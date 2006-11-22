@@ -6,16 +6,16 @@
 %bcond_with	verbose		# verbose build (V=1)
 %bcond_without	userspace	# don't build userspace tools
 #
-%define		_rel	1
+%define		_rel	0.1
 Summary:	Simulate a CD drive + CD with just simple cue/bin files
 Summary(pl):	Symulacja napêdu CD z p³ytk± przy u¿yciu plików cue/bin
 Name:		cdemu
-Version:	0.7
+Version:	0.8
 Release:	%{_rel}
 License:	GPL v2
 Group:		Applications/System
-Source0:	http://robert.private.outertech.com/virtualcd/%{name}-%{version}.tar.bz2
-# Source0-md5:	e1a0ba6c76b4eeaf434f44d4a0f61678
+Source0:	http://dl.sourceforge.net/cdemu/%{name}-%{version}.tar.bz2
+# Source0-md5:	e5e60f73caf168936c38f115ecf4a144
 URL:		http://www.cdemu.org/
 %if %{with userspace}
 %pyrequires_eq	python-libs
@@ -105,20 +105,25 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
 		exit 1
 	fi
 	rm -rf include
-	install -d include/{linux,config}
-	ln -sf %{_kernelsrcdir}/config-$cfg .config
-	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h include/linux/autoconf.h
-	ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
-	ln -sf %{_kernelsrcdir}/Module.symvers-$cfg Module.symvers
-	touch include/config/MARKER
+	install -d o/include/linux
+	ln -sf %{_kernelsrcdir}/config-$cfg o/.config
+	ln -sf %{_kernelsrcdir}/Module.symvers.h o/Module.symvers
+	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h o/include/linux/autoconf.h
+%if %{with dist_kernel}
+	%{__make} -j1 -C %{_kernelsrcdir} O=$PWD/o prepare scripts
+%else
+	install -d o/include/config
+	touch o/include/config/MARKER
+	ln -sf %{_kernelsrcdir}/scripts o/scripts
+%endif
 
 	%{__make} -C %{_kernelsrcdir} clean \
 		RCS_FIND_IGNORE="-name '*.ko' -o" \
-		M=$PWD O=$PWD \
+		M=$PWD O=$PWD/o MK_INC=$PWD \
 		%{?with_verbose:V=1}
 	%{__make} -C %{_kernelsrcdir} modules \
 		CC="%{__cc}" CPP="%{__cpp}" \
-		M=$PWD O=$PWD \
+		M=$PWD O=$PWD/o MK_INC=$PWD \
 		%{?with_verbose:V=1}
 
 	mv cdemu{,-$cfg}.ko
