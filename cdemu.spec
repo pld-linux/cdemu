@@ -22,8 +22,8 @@ URL:		http://www.cdemu.org/
 BuildRequires:	python-devel
 %endif
 %if %{with kernel}
-%{?with_dist_kernel:BuildRequires:	kernel-module-build >= 3:2.6.7}
-BuildRequires:	rpmbuild(macros) >= 1.153
+%{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.7}
+BuildRequires:	rpmbuild(macros) >= 1.330
 %endif
 Requires:	cdemu(kernel)
 Requires:	dev >= 2.9.0-16
@@ -51,7 +51,7 @@ który mo¿e odtwarzaæ obrazy bin/cur bezpo¶rednio.
 
 Ten pakiet zawiera narzêdzia u¿ytkownika dla %{name}.
 
-%package -n kernel-misc-%{name}
+%package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux driver for %{name}
 Summary(pl):	Sterownik dla Linuksa do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
@@ -63,17 +63,17 @@ Requires(postun):	%releq_kernel_up
 %endif
 Provides:	cdemu(kernel)
 
-%description -n kernel-misc-%{name}
+%description -n kernel%{_alt_kernel}-misc-%{name}
 This is driver for %{name} for Linux.
 
 This package contains Linux module.
 
-%description -n kernel-misc-%{name} -l pl
+%description -n kernel%{_alt_kernel}-misc-%{name} -l pl
 Sterownik dla Linuksa do %{name}.
 
 Ten pakiet zawiera modu³ j±dra Linuksa.
 
-%package -n kernel-smp-misc-%{name}
+%package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP driver for %{name}
 Summary(pl):	Sterownik dla Linuksa SMP do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
@@ -85,50 +85,25 @@ Requires(postun):	%releq_kernel_smp
 %endif
 Provides:	cdemu(kernel)
 
-%description -n kernel-smp-misc-%{name}
+%description -n kernel%{_alt_kernel}-smp-misc-%{name}
 This is driver for %{name} for Linux.
 
 This package contains Linux SMP module.
 
-%description -n kernel-smp-misc-%{name} -l pl
+%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl
 Sterownik dla Linuksa do %{name}.
 
 Ten pakiet zawiera modu³ j±dra Linuksa SMP.
 
 %prep
 %setup -q
+cat > Makefile <<'EOF'
+obj-m := cdemu.o
+cdemu-objs := cdemu_core.o cdemu_mod.o cdemu_proc.o
+EOF
 
 %build
-%if %{with kernel}
-for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}; do
-	if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
-		exit 1
-	fi
-	rm -rf include
-	install -d o/include/linux
-	ln -sf %{_kernelsrcdir}/config-$cfg o/.config
-	ln -sf %{_kernelsrcdir}/Module.symvers.h o/Module.symvers
-	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h o/include/linux/autoconf.h
-%if %{with dist_kernel}
-	%{__make} -j1 -C %{_kernelsrcdir} O=$PWD/o prepare scripts
-%else
-	install -d o/include/config
-	touch o/include/config/MARKER
-	ln -sf %{_kernelsrcdir}/scripts o/scripts
-%endif
-
-	%{__make} -C %{_kernelsrcdir} clean \
-		RCS_FIND_IGNORE="-name '*.ko' -o" \
-		M=$PWD O=$PWD/o MK_INC=$PWD \
-		%{?with_verbose:V=1}
-	%{__make} -C %{_kernelsrcdir} modules \
-		CC="%{__cc}" CPP="%{__cpp}" \
-		M=$PWD O=$PWD/o MK_INC=$PWD \
-		%{?with_verbose:V=1}
-
-	mv cdemu{,-$cfg}.ko
-done
-%endif
+%build_kernel_modules -m cdemu
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -144,39 +119,33 @@ install cdemu $RPM_BUILD_ROOT%{_bindir}/cdemu
 %endif
 
 %if %{with kernel}
-install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/misc
-install cdemu-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/misc/cdemu.ko
-%if %{with smp} && %{with dist_kernel}
-install cdemu-smp.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/misc/cdemu.ko
-%endif
+%install_kernel_modules -m cdemu -d misc
 %endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-n kernel-misc-%{name}
+%post	-n kernel%{_alt_kernel}-misc-%{name}
 %depmod %{_kernel_ver}
 
-%postun	-n kernel-misc-%{name}
+%postun	-n kernel%{_alt_kernel}-misc-%{name}
 %depmod %{_kernel_ver}
 
-%post	-n kernel-smp-misc-%{name}
+%post	-n kernel%{_alt_kernel}-smp-misc-%{name}
 %depmod %{_kernel_ver}smp
 
-%postun	-n kernel-smp-misc-%{name}
+%postun	-n kernel%{_alt_kernel}-smp-misc-%{name}
 %depmod %{_kernel_ver}smp
 
 %if %{with kernel}
-%files -n kernel-misc-%{name}
+%files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/misc/*.ko*
+/lib/modules/%{_kernel_ver}/misc/cdemu.ko*
 
 %if %{with smp} && %{with dist_kernel}
-%files -n kernel-smp-misc-%{name}
+%files -n kernel%{_alt_kernel}-smp-misc-%{name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}smp/misc/*.ko*
+/lib/modules/%{_kernel_ver}smp/misc/cdemu.ko*
 %endif
 %endif
 
