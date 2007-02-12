@@ -8,7 +8,7 @@
 #
 %define		_rel	0.1
 Summary:	Simulate a CD drive + CD with just simple cue/bin files
-Summary(pl.UTF-8):   Symulacja napędu CD z płytką przy użyciu plików cue/bin
+Summary(pl.UTF-8):	Symulacja napędu CD z płytką przy użyciu plików cue/bin
 Name:		cdemu
 Version:	0.8
 Release:	%{_rel}
@@ -53,7 +53,7 @@ Ten pakiet zawiera narzędzia użytkownika dla %{name}.
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux driver for %{name}
-Summary(pl.UTF-8):   Sterownik dla Linuksa do %{name}
+Summary(pl.UTF-8):	Sterownik dla Linuksa do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
@@ -75,7 +75,7 @@ Ten pakiet zawiera moduł jądra Linuksa.
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP driver for %{name}
-Summary(pl.UTF-8):   Sterownik dla Linuksa SMP do %{name}
+Summary(pl.UTF-8):	Sterownik dla Linuksa SMP do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
