@@ -8,7 +8,7 @@
 #
 %define		_rel	0.1
 Summary:	Simulate a CD drive + CD with just simple cue/bin files
-Summary(pl):	Symulacja napêdu CD z p³ytk± przy u¿yciu plików cue/bin
+Summary(pl.UTF-8):   Symulacja napÄ™du CD z pÅ‚ytkÄ… przy uÅ¼yciu plikÃ³w cue/bin
 Name:		cdemu
 Version:	0.8
 Release:	%{_rel}
@@ -40,20 +40,20 @@ and I made for it (more under History).
 
 This package includes userspace tools for %{name}.
 
-%description -l pl
-CDemu to modu³ j±dra Linuksa. Zosta³ zaprojektowany do symulowania
-napêdu CD z p³ytk± przy u¿yciu plików cue/bin, które s± do¶æ popularne
-w ¶wiecie windowsowym. Zawiera program dzia³aj±cy w przestrzeni
-u¿ytkownika s³u¿±cy do kontroli pracy modu³u. Mo¿na u¿ywaæ go do
-ogl±dania SVCD lub montowania ¶cie¿ek danych z bin/cue. Mimo to
-autorzy do ogl±dania SVCD polecaj± raczej MPlayera ze swoj± ³atk±,
-który mo¿e odtwarzaæ obrazy bin/cur bezpo¶rednio.
+%description -l pl.UTF-8
+CDemu to moduÅ‚ jÄ…dra Linuksa. ZostaÅ‚ zaprojektowany do symulowania
+napÄ™du CD z pÅ‚ytkÄ… przy uÅ¼yciu plikÃ³w cue/bin, ktÃ³re sÄ… doÅ›Ä‡ popularne
+w Å›wiecie windowsowym. Zawiera program dziaÅ‚ajÄ…cy w przestrzeni
+uÅ¼ytkownika sÅ‚uÅ¼Ä…cy do kontroli pracy moduÅ‚u. MoÅ¼na uÅ¼ywaÄ‡ go do
+oglÄ…dania SVCD lub montowania Å›cieÅ¼ek danych z bin/cue. Mimo to
+autorzy do oglÄ…dania SVCD polecajÄ… raczej MPlayera ze swojÄ… Å‚atkÄ…,
+ktÃ³ry moÅ¼e odtwarzaÄ‡ obrazy bin/cur bezpoÅ›rednio.
 
-Ten pakiet zawiera narzêdzia u¿ytkownika dla %{name}.
+Ten pakiet zawiera narzÄ™dzia uÅ¼ytkownika dla %{name}.
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux driver for %{name}
-Summary(pl):	Sterownik dla Linuksa do %{name}
+Summary(pl.UTF-8):   Sterownik dla Linuksa do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
@@ -68,14 +68,14 @@ This is driver for %{name} for Linux.
 
 This package contains Linux module.
 
-%description -n kernel%{_alt_kernel}-misc-%{name} -l pl
+%description -n kernel%{_alt_kernel}-misc-%{name} -l pl.UTF-8
 Sterownik dla Linuksa do %{name}.
 
-Ten pakiet zawiera modu³ j±dra Linuksa.
+Ten pakiet zawiera moduÅ‚ jÄ…dra Linuksa.
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP driver for %{name}
-Summary(pl):	Sterownik dla Linuksa SMP do %{name}
+Summary(pl.UTF-8):   Sterownik dla Linuksa SMP do %{name}
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
@@ -90,10 +90,10 @@ This is driver for %{name} for Linux.
 
 This package contains Linux SMP module.
 
-%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl
+%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl.UTF-8
 Sterownik dla Linuksa do %{name}.
 
-Ten pakiet zawiera modu³ j±dra Linuksa SMP.
+Ten pakiet zawiera moduÅ‚ jÄ…dra Linuksa SMP.
 
 %prep
 %setup -q
