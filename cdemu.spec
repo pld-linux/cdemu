@@ -1,7 +1,8 @@
 #
 # Conditional build:
 %bcond_without	dist_kernel	# without distribution kernel
-%bcond_without	smp		# without smp packages
+%bcond_without	up		# without UP packages
+%bcond_without	smp		# without SMP packages
 %bcond_without	kernel		# without kernel packages
 %bcond_with	verbose		# verbose build (V=1)
 %bcond_without	userspace	# don't build userspace tools
@@ -138,9 +139,11 @@ rm -rf $RPM_BUILD_ROOT
 %depmod %{_kernel_ver}smp
 
 %if %{with kernel}
+%if %{with up} || %{without dist_kernel}
 %files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/misc/cdemu.ko*
+%endif
 
 %if %{with smp} && %{with dist_kernel}
 %files -n kernel%{_alt_kernel}-smp-misc-%{name}
