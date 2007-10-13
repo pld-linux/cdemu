@@ -1,8 +1,9 @@
 #
+# TODO:
+# - find/make a patch for newer (2.6.22 here) kernels
+#
 # Conditional build:
 %bcond_without	dist_kernel	# without distribution kernel
-%bcond_without	up		# without UP packages
-%bcond_without	smp		# without SMP packages
 %bcond_without	kernel		# without kernel packages
 %bcond_with	verbose		# verbose build (V=1)
 %bcond_without	userspace	# don't build userspace tools
@@ -59,8 +60,8 @@ Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
 %if %{with dist_kernel}
-%requires_releq_kernel_up
-Requires(postun):	%releq_kernel_up
+%requires_releq_kernel
+Requires(postun):	%releq_kernel
 %endif
 Provides:	cdemu(kernel)
 
@@ -73,28 +74,6 @@ This package contains Linux module.
 Sterownik dla Linuksa do %{name}.
 
 Ten pakiet zawiera moduł jądra Linuksa.
-
-%package -n kernel%{_alt_kernel}-smp-misc-%{name}
-Summary:	Linux SMP driver for %{name}
-Summary(pl.UTF-8):	Sterownik dla Linuksa SMP do %{name}
-Release:	%{_rel}@%{_kernel_ver_str}
-Group:		Base/Kernel
-Requires(post,postun):	/sbin/depmod
-%if %{with dist_kernel}
-%requires_releq_kernel_smp
-Requires(postun):	%releq_kernel_smp
-%endif
-Provides:	cdemu(kernel)
-
-%description -n kernel%{_alt_kernel}-smp-misc-%{name}
-This is driver for %{name} for Linux.
-
-This package contains Linux SMP module.
-
-%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl.UTF-8
-Sterownik dla Linuksa do %{name}.
-
-Ten pakiet zawiera moduł jądra Linuksa SMP.
 
 %prep
 %setup -q
@@ -132,12 +111,6 @@ rm -rf $RPM_BUILD_ROOT
 %postun	-n kernel%{_alt_kernel}-misc-%{name}
 %depmod %{_kernel_ver}
 
-%post	-n kernel%{_alt_kernel}-smp-misc-%{name}
-%depmod %{_kernel_ver}smp
-
-%postun	-n kernel%{_alt_kernel}-smp-misc-%{name}
-%depmod %{_kernel_ver}smp
-
 %if %{with kernel}
 %if %{with up} || %{without dist_kernel}
 %files -n kernel%{_alt_kernel}-misc-%{name}
@@ -145,11 +118,6 @@ rm -rf $RPM_BUILD_ROOT
 /lib/modules/%{_kernel_ver}/misc/cdemu.ko*
 %endif
 
-%if %{with smp} && %{with dist_kernel}
-%files -n kernel%{_alt_kernel}-smp-misc-%{name}
-%defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}smp/misc/cdemu.ko*
-%endif
 %endif
 
 %if %{with userspace}
