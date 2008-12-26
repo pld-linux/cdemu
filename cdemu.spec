@@ -12,7 +12,7 @@
 Summary:	Simulate a CD drive + CD with just simple cue/bin files
 Summary(pl.UTF-8):	Symulacja napędu CD z płytką przy użyciu plików cue/bin
 Name:		cdemu
-Version:	1.1.0
+Version:	0.8
 Release:	%{_rel}
 License:	GPL v2
 Group:		Applications/System
